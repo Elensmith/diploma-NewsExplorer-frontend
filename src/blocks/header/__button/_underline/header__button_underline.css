@@ -1,0 +1,9 @@
+.header__button.header__button_underline {
+  border-bottom: solid white;
+}
+
+@media screen and (max-width: 670px) {
+  .header__button.header__button_underline {
+    border-bottom: none;
+  }
+}

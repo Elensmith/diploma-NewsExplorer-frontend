@@ -1,0 +1,6 @@
+@import url(./_grey/button__main_grey.css);
+
+.button__main {
+  margin: 1.875rem 0 1.625rem 0;
+  color: white;
+}

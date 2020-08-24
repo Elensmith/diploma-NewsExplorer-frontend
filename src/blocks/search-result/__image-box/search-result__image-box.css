@@ -1,0 +1,6 @@
+.search-result__image-box {
+  display: grid;
+
+  position: relative;
+  grid-auto-flow: row;
+}

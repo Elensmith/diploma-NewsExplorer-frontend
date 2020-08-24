@@ -1,0 +1,21 @@
+.subtitle__article {
+  padding-top: 1rem;
+  font-size: 1em;
+  line-height: 1.375em;
+  /* text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; */
+}
+
+@media screen and (max-width: 1100px) {
+  .subtitle__article {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+@media screen and (max-width: 780px) {
+  .subtitle__article {
+    padding-top: 0.625rem;
+  }
+}

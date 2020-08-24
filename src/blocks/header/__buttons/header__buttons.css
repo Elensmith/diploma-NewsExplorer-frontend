@@ -1,0 +1,23 @@
+.header__buttons {
+  display: grid;
+  list-style-type: none;
+  grid-gap: 34px;
+  justify-content: end;
+  align-content: center;
+  grid-auto-flow: column;
+  padding-right: 6.5rem;
+}
+
+@media screen and (max-width: 1100px) {
+  .header__buttons {
+    padding-right: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .header__buttons {
+    grid-auto-flow: row;
+    background: #1a1b22;
+    z-index: 2;
+  }
+}

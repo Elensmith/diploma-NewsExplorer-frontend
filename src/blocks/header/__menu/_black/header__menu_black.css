@@ -1,0 +1,6 @@
+.header__menu_black {
+  display: grid;
+  grid-auto-flow: column;
+  height: 5rem;
+  box-shadow: inset 0px -1px 0px #d1d2d6;
+}

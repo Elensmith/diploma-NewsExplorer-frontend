@@ -1,0 +1,13 @@
+.search-result__login-ask {
+  position: absolute;
+  height: 40px;
+  max-width: 182px;
+  right: 4.313rem;
+  top: 1.5rem;
+  padding: 0 0.75rem 0 0.75rem;
+  background: #ffffff;
+  border: none;
+  font-size: 0.625em;
+  border-radius: 0.625rem;
+  z-index: 1;
+}

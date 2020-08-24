@@ -1,0 +1,10 @@
+@import url(../subtitle/subtitle.css);
+@import url(./__link-container/footer__link-container.css);
+@import url(./__img-link-container/footer__img-link-container.css);
+@import url(./__links/footer__links.css);
+@import url(./__copyright/footer__copyright.css);
+@import url(./__link/footer__link.css);
+
+.footer {
+  margin: auto;
+}

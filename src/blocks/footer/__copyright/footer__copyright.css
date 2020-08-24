@@ -1,0 +1,11 @@
+.footer__copyright {
+  display: grid;
+  justify-content: start;
+  align-content: center;
+}
+
+@media screen and (max-width: 670px) {
+  .footer__copyright {
+    grid-row-start: 2;
+  }
+}

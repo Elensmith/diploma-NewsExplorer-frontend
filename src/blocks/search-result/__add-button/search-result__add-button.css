@@ -1,0 +1,13 @@
+.search-result__add-button {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.45rem;
+  border: none;
+  outline: none;
+  padding: 0;
+  /* background: url(../../../images/cardmarks/cardmark-marked.svg);
+  background: no-repeat;
+  z-index: 2; */
+  background: transparent;
+  cursor: pointer;
+}

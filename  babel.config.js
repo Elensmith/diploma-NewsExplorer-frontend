@@ -4,7 +4,7 @@ const presets = [
     {
       targets: {
         // указать цели, для полифилов
-        edge: "17",
+        edge: "15",
         ie: "11",
         firefox: "50",
         chrome: "64",

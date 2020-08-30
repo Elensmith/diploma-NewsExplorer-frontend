@@ -7,7 +7,7 @@
 ####Запуск:
 
 - npm run build - версия для продакшн
-- nmp run deploy -- загрузка на gh-pages
-- nmp run dev -- запуск в режиме разработки
+- npm run deploy -- загрузка на gh-pages
+- npm run dev -- запуск в режиме разработки
 
 ### version 1.0.4

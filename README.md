@@ -10,4 +10,4 @@
 - npm run deploy -- загрузка на gh-pages
 - npm run dev -- запуск в режиме разработки
 
-### version 1.0.4
+### version 1.0.5

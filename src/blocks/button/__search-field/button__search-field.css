@@ -2,7 +2,7 @@
   position: absolute;
   border-radius: 6.25em;
   top: 0;
-  right: -1.6rem;
+  right: -1.7rem;
   bottom: 0;
   background: #2f71e5;
   color: white;
@@ -28,6 +28,9 @@
 @media screen and (max-width: 670px) {
   .button__search-field {
     position: initial;
-    min-width: 100%;
+    min-width: none;
+    max-width: none;
+    width: 100%;
+    margin-top: 1rem;
   }
 }

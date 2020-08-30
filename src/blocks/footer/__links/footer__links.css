@@ -17,5 +17,6 @@
   .footer__links {
     grid-auto-flow: row;
     max-height: 11rem;
+    padding: 0 1rem 0 1rem;
   }
 }

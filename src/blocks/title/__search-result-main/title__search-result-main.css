@@ -3,3 +3,9 @@
   font-size: 2.5em;
   color: black;
 }
+
+@media screen and (max-width: 836px) {
+  .title__search-result-main {
+    font-size: 1.875em;
+  }
+}

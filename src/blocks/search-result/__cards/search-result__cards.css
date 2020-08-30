@@ -7,6 +7,13 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+@media screen and (max-width: 752px) {
+  .search-result__cards {
+    grid-template-columns: repeat(2, 1fr);
+    margin: auto;
+  }
+}
+
 @media screen and (max-width: 680px) {
   .search-result__cards {
     grid-template-columns: repeat(1, 1fr);

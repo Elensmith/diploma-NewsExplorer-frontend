@@ -5,7 +5,7 @@
 @import url(./__saved-news/title__saved-news.css);
 
 .title {
-  font-family: "Roboto Slab";
+  font-family: "Roboto Slab", Arial, Helvetica, sans-serif;
   font-weight: normal;
   margin: 0;
 }

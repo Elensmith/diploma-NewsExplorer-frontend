@@ -1,5 +1,8 @@
 @import url(./_underline/header__button_underline.css);
 @import url(./_underline-black/header__button_underline-black.css);
+@import url(./_off/header__button_off.css);
+@import url(./_auth/header__button_auth.css);
+@import url(./_saved/header__button_saved.css);
 
 .header__button {
   display: flex;
@@ -9,4 +12,5 @@
   outline: none;
   border-style: none;
   align-self: center;
+  margin: 0;
 }

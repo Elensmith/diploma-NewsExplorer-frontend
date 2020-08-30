@@ -19,5 +19,8 @@
     grid-auto-flow: row;
     grid-row-start: 1;
     grid-column-start: 1;
+    justify-content: start;
+    padding: 0;
+    width: max-content;
   }
 }

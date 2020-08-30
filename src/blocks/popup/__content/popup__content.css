@@ -7,3 +7,10 @@
   box-sizing: border-box;
   padding: 2.125rem 2.25rem;
 }
+
+@media screen and (max-width: 741px) {
+  .popup__content {
+    padding-bottom: 100%;
+    width: 100%;
+  }
+}

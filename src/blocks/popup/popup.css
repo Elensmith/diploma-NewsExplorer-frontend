@@ -23,3 +23,12 @@
   z-index: 1;
   display: none;
 }
+
+@media screen and (max-width: 741px) {
+  .popup {
+    z-index: 2;
+    top: 3.5rem;
+    height: auto;
+    background-color: initial;
+  }
+}

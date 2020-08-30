@@ -15,23 +15,27 @@
   <body>
     <div class="root">
       <header class="header header_white">
-        <nav class="header__menu_black">
+        <nav class="header__menu header__menu_black">
           <a href="./index.html" class="header__logo button_black"
             >NewsExplorer</a
           >
-          <div class="header__buttons">
-            <button class="header__button">
+          <button
+            class="header__menu-mobile header__menu-mobile_white"
+            id="header__menu-mobile-articles-page"
+          ></button>
+          <ul class="header__buttons">
+            <li class="header__button">
               <a href="./index.html" class="button button__main button_black"
-                >Главная</a
-              >
-            </button>
+                >Главная
+              </a>
+            </li>
             <!-- header__button_underline-black для подчеркивания -->
-            <button class="header__button header__button_underline-black">
+            <li class="header__button header__button_underline-black">
               <a href="./articles.html" class="button button__main button_black"
-                >Сохраненные статьи</a
-              >
-            </button>
-            <button class="header__button">
+                >Сохраненные статьи
+              </a>
+            </li>
+            <li class="header__button">
               <a
                 href="#"
                 class="button button__selected button_black button__selected_black button__selected_with-name"
@@ -39,11 +43,11 @@
                 <img
                   class="button button__logout"
                   src="<%=require('../images/logout-black.svg').default%>"
-                  alt="выход"
+                  alt="иконка выход из профиля"
                 />
               </a>
-            </button>
-          </div>
+            </li>
+          </ul>
         </nav>
         <div class="header__info header__info_saved">
           <h3 class="subtitle subtitle__header subtitle__header_grey">
@@ -73,12 +77,12 @@
               <img
                 class="search-result__image"
                 src="<%=require('../images/card4.jpg').default%>"
-                alt="карточка"
+                alt="фотография новости"
               />
               <button class="search-result__add-button">
                 <img
                   src="<%=require('../images/trash/trash-normal.svg').default%>"
-                  alt="удалить"
+                  alt="иконка удалить новость"
                 />
               </button>
             </div>
@@ -103,12 +107,12 @@
               <img
                 class="search-result__image"
                 src="<%=require('../images/card5.jpg').default%>"
-                alt="карточка"
+                alt="фотография новости"
               />
               <button class="search-result__add-button">
                 <img
                   src="<%=require('../images/trash/trash-normal.svg').default%>"
-                  alt="удалить"
+                  alt="иконка удалить новость"
                 />
               </button>
             </div>
@@ -133,12 +137,12 @@
               <img
                 class="search-result__image"
                 src="<%=require('../images/card6.jpg').default%>"
-                alt="карточка"
+                alt="фотография новости"
               />
               <button class="search-result__add-button">
                 <img
                   src="<%=require('../images/trash/trash-normal.svg').default%>"
-                  alt="удалить"
+                  alt="иконка удалить новость"
                 />
               </button>
             </div>
@@ -163,12 +167,12 @@
               <img
                 class="search-result__image"
                 src="<%=require('../images/card1.jpg').default%>"
-                alt="карточка"
+                alt="фотография новости"
               />
               <button class="search-result__add-button">
                 <img
                   src="<%=require('../images/trash/trash-normal.svg').default%>"
-                  alt="удалить"
+                  alt="иконка удалить новость"
                 />
               </button>
             </div>
@@ -193,12 +197,12 @@
               <img
                 class="search-result__image"
                 src="<%=require('../images/card2.jpg').default%>"
-                alt="карточка"
+                alt="фотография новости"
               />
               <button class="search-result__add-button">
                 <img
                   src="<%=require('../images/trash/trash-normal.svg').default%>"
-                  alt="удалить"
+                  alt="иконка удалить новость"
                 />
               </button>
             </div>

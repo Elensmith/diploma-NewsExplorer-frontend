@@ -6,7 +6,7 @@
   background: white;
   border: none;
   color: #1a1b22;
-  padding-left: 1.5rem;
+  text-indent: 1.5rem;
   caret-color: #2f71e5;
   outline: none;
   border: none;
@@ -14,7 +14,7 @@
 
 .search-field__input::placeholder {
   color: #b6bcbf;
-  font-family: Roboto;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
 .search-field__input:disabled {
@@ -24,5 +24,11 @@
 @media screen and (max-width: 1100px) {
   .search-field__input {
     height: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .search-field__input {
+    margin: auto;
   }
 }

@@ -11,6 +11,7 @@
 @import url(./__source/search-result__source.css);
 @import url(../button/button.css);
 @import url(./__tag/search-result__tag.css);
+@import url(./_filter/search-result_filter.css);
 
 .search-result {
   display: flex;
@@ -22,5 +23,11 @@
 @media screen and (max-width: 1100px) {
   .search-result {
     padding: 0 2.5rem 0 2.5rem;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .search-result {
+    padding: 0 1rem 0 1rem;
   }
 }

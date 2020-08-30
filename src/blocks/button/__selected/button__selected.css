@@ -8,3 +8,9 @@
   color: white;
   height: 20px;
 }
+
+@media screen and (max-width: 741px) {
+  .button__selected {
+    padding: 0.938rem 4.625rem 0.938rem;
+  }
+}

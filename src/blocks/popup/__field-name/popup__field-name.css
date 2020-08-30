@@ -1,6 +1,6 @@
 .popup__field-name {
   margin: 0;
-  font-family: "Inter";
+  font-family: "Inter", Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 0.75em;
@@ -9,5 +9,5 @@
 }
 
 .popup__field-name:first-child {
-  padding-top: 1.375em;
+  padding-top: 1.875rem;
 }

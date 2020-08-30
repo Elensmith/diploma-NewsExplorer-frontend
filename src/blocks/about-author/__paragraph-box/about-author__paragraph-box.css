@@ -28,7 +28,6 @@
 @media screen and (max-width: 670px) {
   .about-author__paragraph-box {
     padding: 1rem 1rem 5rem 1rem;
-    max-width: 18rem;
-    max-height: 18rem;
+    max-height: none;
   }
 }

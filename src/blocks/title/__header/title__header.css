@@ -12,3 +12,9 @@
     line-height: 1.4em;
   }
 }
+
+@media screen and (max-width: 741px) {
+  .title__header {
+    padding: 1.875rem 0 1rem;
+  }
+}

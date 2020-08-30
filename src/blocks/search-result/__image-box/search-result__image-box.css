@@ -1,6 +1,6 @@
 .search-result__image-box {
-  display: grid;
+  /* display: grid;
 
   position: relative;
-  grid-auto-flow: row;
+  grid-auto-flow: row; */
 }

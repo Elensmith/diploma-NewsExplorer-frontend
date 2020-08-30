@@ -7,9 +7,14 @@
   box-shadow: inset 0 -0.063em 0 rgba(255, 255, 255, 0.2);
 }
 
+@media screen and (max-width: 876px) {
+  .header__menu {
+    height: 4.125rem;
+  }
+}
+
 @media screen and (max-width: 670px) {
   .header__menu {
-    grid-auto-flow: row;
-    background: #1a1b22;
+    height: 3.5rem;
   }
 }

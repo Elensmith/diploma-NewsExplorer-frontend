@@ -8,3 +8,9 @@
     padding: 1.5rem 0 2rem 2.5rem;
   }
 }
+
+@media screen and (max-width: 670px) {
+  .header__info.header__info_saved {
+    padding: 0.5rem 1rem 2rem 1rem;
+  }
+}

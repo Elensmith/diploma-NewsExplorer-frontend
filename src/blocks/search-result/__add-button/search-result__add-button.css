@@ -1,0 +1,10 @@
+.search-result__add-button {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.45rem;
+  border: none;
+  outline: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}

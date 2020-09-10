@@ -1,0 +1,16 @@
+.popup__content {
+  width: 26.875rem;
+  min-height: 11.375em;
+  background-color: #fff;
+  border-radius: 1rem;
+  position: relative;
+  box-sizing: border-box;
+  padding: 2.125rem 2.25rem;
+}
+
+@media screen and (max-width: 741px) {
+  .popup__content {
+    padding-bottom: 100%;
+    width: 100%;
+  }
+}

@@ -1,0 +1,22 @@
+.footer__links {
+  display: grid;
+  grid-auto-flow: column;
+  align-content: center;
+  grid-template-columns: auto auto min-content;
+  max-height: 5rem;
+  padding: 0 6.5rem 0 6.5rem;
+}
+
+@media screen and (max-width: 1100px) {
+  .footer__links {
+    padding: 0 2.5rem 0 2.5rem;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .footer__links {
+    grid-auto-flow: row;
+    max-height: 11rem;
+    padding: 0 1rem 0 1rem;
+  }
+}

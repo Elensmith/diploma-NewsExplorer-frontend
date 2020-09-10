@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>NewsExplorer</title>
+    <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.css %>" />
+    <link
+      rel="shortcut icon"
+      href="<%=require('../images/favicon.png').default%>"
+      type="image/png"
+    />
+  </head>
+  <body>
+    <div class="root">
+      <header class="header header_white">
+        <nav class="header__menu header__menu_black">
+          <a href="./index.html" class="header__logo button_black"
+            >NewsExplorer</a
+          >
+          <button
+            class="header__menu-mobile header__menu-mobile_white"
+            id="header__menu-mobile-articles-page"
+          ></button>
+          <ul class="header__buttons">
+            <li class="header__button">
+              <a href="./index.html" class="button button__main button_black"
+                >Главная
+              </a>
+            </li>
+            <!-- header__button_underline-black для подчеркивания -->
+            <li class="header__button header__button_underline-black">
+              <a href="./articles.html" class="button button__main button_black"
+                >Сохраненные статьи
+              </a>
+            </li>
+            <li class="header__button">
+              <a
+                href="#"
+                class="button button__selected button_black button__selected_black button__selected_with-name"
+                >Грета
+                <img
+                  class="button button__logout"
+                  src="<%=require('../images/logout-black.svg').default%>"
+                  alt="иконка выход из профиля"
+                />
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="header__info header__info_saved">
+          <h3 class="subtitle subtitle__header subtitle__header_grey">
+            Сохранённые статьи
+          </h3>
+          <h1 class="title title__saved-news">
+            Грета, у вас 5 сохранённых статей
+          </h1>
+          <p class="header__tags subtitle subtitle__footer-link">
+            По ключевым словам:
+            <span class="subtitle__span">Природа, Тайга</span> и
+            <span class="subtitle__span">2 другим</span>
+          </p>
+        </div>
+      </header>
+
+      <div class="search-result">
+        <div class="search-result__cards">
+          <div class="search-result__card">
+            <div class="search-result__image-box">
+              <button class="search-result__tag">
+                Природа
+              </button>
+              <button class="search-result__login-ask">
+                Убрать из сохранённых
+              </button>
+              <img
+                class="search-result__image"
+                src="<%=require('../images/card4.jpg').default%>"
+                alt="фотография новости"
+              />
+              <button class="search-result__add-button">
+                <img
+                  src="<%=require('../images/trash/trash-normal.svg').default%>"
+                  alt="иконка удалить новость"
+                />
+              </button>
+            </div>
+            <div class="search-result__info-box">
+              <div class="search-result__date">2 августа, 2019</div>
+              <h5 class="title title__search-result-article">
+                Национальное достояние – парки
+              </h5>
+              <p class="subtitle subtitle__article">
+                В 2016 году Америка отмечала важный юбилей: сто лет назад здесь
+                начала складываться система национальных парков – охраняемых
+                территорий, где и сегодня каждый может приобщиться к природе.
+              </p>
+              <p class="search-result__source">Лента.ру</p>
+            </div>
+          </div>
+          <div class="search-result__card">
+            <div class="search-result__image-box">
+              <button class="search-result__tag">
+                Природа
+              </button>
+              <img
+                class="search-result__image"
+                src="<%=require('../images/card5.jpg').default%>"
+                alt="фотография новости"
+              />
+              <button class="search-result__add-button">
+                <img
+                  src="<%=require('../images/trash/trash-normal.svg').default%>"
+                  alt="иконка удалить новость"
+                />
+              </button>
+            </div>
+            <div class="search-result__info-box">
+              <div class="search-result__date">2 августа, 2019</div>
+              <h5 class="title title__search-result-article">
+                Лесные огоньки: история одной фотографии
+              </h5>
+              <p class="subtitle subtitle__article">
+                Фотограф отвлеклась от освещения суровой политической реальности
+                Мексики, чтобы запечатлеть ускользающую красоту одного из
+                местных чудес природы.
+              </p>
+              <p class="search-result__source">Медуза</p>
+            </div>
+          </div>
+          <div class="search-result__card">
+            <div class="search-result__image-box">
+              <button class="search-result__tag">
+                Тайга
+              </button>
+              <img
+                class="search-result__image"
+                src="<%=require('../images/card6.jpg').default%>"
+                alt="фотография новости"
+              />
+              <button class="search-result__add-button">
+                <img
+                  src="<%=require('../images/trash/trash-normal.svg').default%>"
+                  alt="иконка удалить новость"
+                />
+              </button>
+            </div>
+            <div class="search-result__info-box">
+              <div class="search-result__date">2 августа, 2019</div>
+              <h5 class="title title__search-result-article">
+                «Первозданная тайга»: новый фотопроект Игоря Шпиленка
+              </h5>
+              <p class="subtitle subtitle__article">
+                Знаменитый фотограф снимает первозданные леса России, чтобы
+                рассказать о необходимости их сохранения. В этот раз он
+                отправился в Двинско-Пинежскую тайгу, где...
+              </p>
+              <p class="search-result__source">Риа</p>
+            </div>
+          </div>
+          <div class="search-result__card">
+            <div class="search-result__image-box">
+              <button class="search-result__tag">
+                Парки
+              </button>
+              <img
+                class="search-result__image"
+                src="<%=require('../images/card1.jpg').default%>"
+                alt="фотография новости"
+              />
+              <button class="search-result__add-button">
+                <img
+                  src="<%=require('../images/trash/trash-normal.svg').default%>"
+                  alt="иконка удалить новость"
+                />
+              </button>
+            </div>
+            <div class="search-result__info-box">
+              <div class="search-result__date">2 августа, 2019</div>
+              <h5 class="title title__search-result-article">
+                Национальное достояние – парки
+              </h5>
+              <p class="subtitle subtitle__article">
+                В 2016 году Америка отмечала важный юбилей: сто лет назад здесь
+                начала складываться система национальных парков – охраняемых
+                территорий, где и сегодня каждый может приобщиться к природе.
+              </p>
+              <p class="search-result__source">Лента.ру</p>
+            </div>
+          </div>
+          <div class="search-result__card">
+            <div class="search-result__image-box">
+              <button class="search-result__tag">
+                Фотография
+              </button>
+              <img
+                class="search-result__image"
+                src="<%=require('../images/card2.jpg').default%>"
+                alt="фотография новости"
+              />
+              <button class="search-result__add-button">
+                <img
+                  src="<%=require('../images/trash/trash-normal.svg').default%>"
+                  alt="иконка удалить новость"
+                />
+              </button>
+            </div>
+            <div class="search-result__info-box">
+              <div class="search-result__date">2 августа, 2019</div>
+              <h5 class="title title__search-result-article">
+                Лесные огоньки: история одной фотографии
+              </h5>
+              <p class="subtitle subtitle__article">
+                Фотограф отвлеклась от освещения суровой политической реальности
+                Мексики, чтобы запечатлеть ускользающую красоту одного из
+                местных чудес природы.
+              </p>
+              <p class="search-result__source">Медуза</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <nav class="footer__links">
+          <p class="footer__copyright subtitle subtitle__footer-copy">
+            &copy; 2020 Supersite, Powered by News API
+          </p>
+          <ul class="footer__link-container">
+            <li class="footer__list">
+              <a
+                class="footer__link subtitle subtitle__footer-link"
+                href="./index.html"
+                >Главная</a
+              >
+            </li>
+            <li class="footer__list">
+              <a
+                class="footer__link subtitle subtitle__footer-link"
+                href="https://praktikum.yandex.ru/"
+                target="_blank"
+                >Яндекс.Практикум</a
+              >
+            </li>
+          </ul>
+          <ul class="footer__img-link-container">
+            <li class="footer__list">
+              <a
+                class="footer__link"
+                href="https://github.com/Elensmith/"
+                target="_blank"
+              >
+                <img
+                  class=""
+                  src="<%=require('../images/github.svg').default%>"
+                  alt="логотип гитхаб"
+                />
+              </a>
+            </li>
+            <li class="footer__list">
+              <a
+                class="footer__link"
+                href="https://www.facebook.com/"
+                target="_blank"
+              >
+                <img
+                  class=""
+                  src="<%=require('../images/facebook.svg').default%>"
+                  alt="логотип фэйсбук"
+                />
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <script type="module" src="<%= htmlWebpackPlugin.files.js %>"></script>
+  </body>
+</html>

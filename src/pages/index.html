@@ -96,7 +96,34 @@
         <div class="search-result">
           <h4 class="title title__search-result-main">Результаты поиска</h4>
           <div class="search-result__cards">
-            <div class="search-result__card">
+            <!-- search-result__card_off -->
+            <template id="card-template">
+              <div class="search-result__card">
+                <div class="search-result__image-box">
+                  <button class="search-result__login-ask">
+                    Войдите, чтобы сохранять статьи
+                  </button>
+                  <img
+                    class="search-result__image"
+                    src="" alt="фотография новости"
+                  />
+                  <div class="search-result__add-button">
+                    <img
+                      class=""
+                      src="" alt="иконка закладка"
+                    />
+                  </div>
+                </div>
+                <div class="search-result__info-box">
+                  <div class="search-result__date"></div>
+                  <h5 class="title title__search-result-article"></h5>
+                  <p class="subtitle subtitle__article"></p>
+                  <p class="search-result__source"></p>
+                </div>
+              </div>
+            </template>
+
+            <!-- <div class="search-result__card">
               <div class="search-result__image-box">
                 <button class="search-result__login-ask">
                   Войдите, чтобы сохранять статьи
@@ -124,8 +151,8 @@
                 </p>
                 <p class="search-result__source">Лента.ру</p>
               </div>
-            </div>
-            <div class="search-result__card">
+            </div> -->
+            <!-- <div class="search-result__card">
               <div class="search-result__image-box">
                 <img
                   class="search-result__image"
@@ -149,14 +176,14 @@
                 </p>
                 <p class="search-result__source">Медуза</p>
               </div>
-            </div>
-            <div class="search-result__card">
+            </div> -->
+            <!-- <div class="search-result__card">
               <div class="search-result__image-box">
                 <!-- <button class="search-result__login-ask button">
                   Войдите, чтобы сохранять статьи
                 </button> -->
-                <img
-                  class="search-result__image"
+             <!--   <img
+                   class="search-result__image"
                   src="<%=require('../images/card3.jpg').default%>" alt="фотография новости"
                 />
                 <button class="search-result__add-button">
@@ -205,7 +232,7 @@
                 </p>
                 <p class="search-result__source">Лента.ру</p>
               </div>
-            </div>
+            </div> -->
             <!-- <div class="search-result__card search-result__card_off">
               <div class="search-result__image-box">
 
@@ -258,7 +285,7 @@
                 <p class="search-result__source">Риа</p>
               </div>
             </div> -->
-          </div>
+          <!-- </div> -->
           <button class="button button__search-result" type="submit" id="search-result-show-more">
             Показать еще
           </button>
@@ -295,26 +322,29 @@
               id="popup__close-enter"
             />
             <h3 class="popup__title">Вход</h3>
-            <form class="popup__form">
+            <form class="popup__form" id="form-enter">
               <p class="popup__field-name">Email</p>
               <input
                 type="text"
                 name="email"
                 class="popup__input popup__input_type_email"
+                pattern="^([a-zA-Z0-9]+[-_.]*[a-zA-Z0-9]+|[a-zA-Z0-9]+)@[-a-zA-Z0-9]+\.[a-zA-Z.]{2,}$"
                 placeholder="Введите почту"
                 required
               />
-              <div class="popup__form_error" id="popup__form_error-email-enter">Неправильный формат email</div>
+              <div class="popup__form_error" id="popup__form_error-email-enter"></div>
               <p class="popup__field-name">Пароль</p>
               <input
                 type="password"
                 name="password"
+                maxlength="30"
+                minlength="8"
                 class="popup__input popup__input_type_password"
                 placeholder="Введите пароль"
                 required
               />
-              <div class="popup__form_error" id="popup__form_error-password-enter"></div>
-              <button type="submit" class="button button__popup">
+              <div class="popup__form_error popup__form_error-enter-password" id="popup__form_error-password-enter"></div>
+              <button type="submit" class="button button__popup" disabled>
                 Войти
               </button>
             </form>
@@ -342,37 +372,43 @@
               id="popup__close-registration"
             />
             <h3 class="popup__title">Регистрация</h3>
-            <form class="popup__form">
+            <form class="popup__form" id="form-registration">
               <p class="popup__field-name">Email</p>
               <input
                 type="text"
                 name="email"
                 class="popup__input popup__input_type_email"
+                pattern="^([a-zA-Z0-9]+[-_.]*[a-zA-Z0-9]+|[a-zA-Z0-9]+)@[-a-zA-Z0-9]+\.[a-zA-Z.]{2,}$"
                 placeholder="Введите почту"
+
                 required
               />
-              <div class="popup__form_error" id="popup__form_error-email-registration">Неправильный формат email</div>
+              <p class="popup__form_error" id="popup__form_error-email-registration"></p>
               <p class="popup__field-name">Пароль</p>
               <input
                 type="password"
                 name="password"
+                maxlength="30"
+                minlength="8"
                 class="popup__input popup__input_type_password"
                 placeholder="Введите пароль"
                 required
               />
-              <div class="popup__form_error" id="popup__form_error-password-registration"></div>
+              <p class="popup__form_error" id="popup__form_error-password-registration"></p>
 
               <p class="popup__field-name">Имя</p>
               <input
                 type="text"
-                name="user"
+                name="name"
                 class="popup__input popup__input_type_email"
                 placeholder="Введите своё имя"
+                maxlength="30"
+                minlength="2"
+                required
               />
-              <div class="popup__form_error popup__form_error-user">
-                Такой пользователь уже есть
-              </div>
-              <button type="submit" class="button button__popup">
+              <p class="popup__form_error popup__form_error-user">
+              </p>
+              <button type="submit" class="button button__popup" disabled>
                 Зарегистрироваться
               </button>
             </form>
@@ -455,3 +491,4 @@
     <script type="module" src="<%= htmlWebpackPlugin.files.js %>"></script>
   </body>
 </html>
+

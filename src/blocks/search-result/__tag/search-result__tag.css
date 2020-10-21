@@ -1,20 +1,19 @@
+@import url(./_on/search-result__tag_on.css);
+
 .search-result__tag {
   position: absolute;
-  height: 2.5rem;
   left: 1.5rem;
   top: 1.5rem;
-  bottom: 76.47%;
   background: #ffffff;
   border: none;
   font-size: 0.625em;
   border-radius: 0.625rem;
   z-index: 1;
   font-family: "Roboto", Arial, Helvetica, sans-serif;
-  font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 24px;
-  text-align: center;
-  color: #000000;
+  line-height: 2.5rem;
+  align-self: baseline;
   padding: 0 0.75rem 0 0.75rem;
+  display: none;
 }

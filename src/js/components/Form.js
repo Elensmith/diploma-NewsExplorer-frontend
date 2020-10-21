@@ -8,16 +8,19 @@ const {
   SERVER_ERR_409,
   SERVER_ERR_401,
   SERVER_ERR_400,
+  SEARCH_ERROR,
 } = errorMessages;
 
 // Класс, отвечающий за логику работы формы
 export default class Form extends BaseComponent {
-  constructor(form, api, popup) {
+  constructor(form, api, popup, card, popupUserAdded) {
     super();
     this.form = form;
     this.api = api;
     this.popup = popup;
-    this.buttonSubmit = this.form.querySelector(".button__popup");
+    this.card = card;
+    this.popupUserAdded = popupUserAdded;
+    this.buttonSubmit = this.form.querySelector(".button");
     this._validateForm = this._validateForm.bind(this);
     this._validateInputs = this._validateInputs.bind(this);
     this.getInfo = this.getInfo.bind(this);
@@ -27,6 +30,7 @@ export default class Form extends BaseComponent {
     this.form.addEventListener("submit", (event) => this.submitForm(event));
     this.reset = this.reset.bind(this);
     this._setServerError = this._setServerError.bind(this);
+    this.isLoggedIn = false;
     // this.form.querySelectorAll("input").forEach((input) => {
     //   this._validateInputElement(input);
     //   this._validateForm();
@@ -77,7 +81,10 @@ export default class Form extends BaseComponent {
         .signup(this.getValues())
         .then(() => {
           this.popup.close();
+          this.popupUserAdded.open();
           this.reset();
+          this.isLoggedIn = false;
+          // this.card.renderIcon(this.isLoggedIn);
         })
         .catch((err) => {
           throw new Error(err);
@@ -85,12 +92,16 @@ export default class Form extends BaseComponent {
     } else if (e.target.getAttribute("id") === "form-enter") {
       this.api
         .signin(this.getValues())
-        .then(() => {
+        .then((res) => {
           this.popup.close();
           this.reset();
+          this.isLoggedIn = true;
+          localStorage.setItem("token", res.token);
+          window.location.reload();
         })
         .catch((err) => {
           this._setServerError(err);
+          this.isLoggedIn = false;
         });
     }
   }
@@ -128,6 +139,9 @@ export default class Form extends BaseComponent {
         valid = false;
       } else if (input.name === "name" && !input.validity.valid) {
         error.textContent = REQUIRED_FIELD;
+        valid = false;
+      } else if (input.name === "search" && !input.validity.valid) {
+        error.textContent = SEARCH_ERROR;
         valid = false;
       } else if (input.validity.valid) {
         error.textContent = "";

@@ -19,7 +19,7 @@ export default class Popup extends BaseComponent {
   // clearContent() {}
 
   // // вставляет в попап содержимое, например, форму входа или сообщение об успешной регистрации
-  // setContent() {
+  // setContent(popup) {
 
   // }
 }

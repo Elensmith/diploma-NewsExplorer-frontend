@@ -3,13 +3,14 @@ import { changeDate } from "../utils/dateConverter";
 
 //  Класс карточки новости
 export default class NewsCard extends BaseComponent {
-  constructor(data, template, page, mainApi, newsCardList) {
+  constructor(data, template, page, mainApi, newsCardList, savedNewsArray) {
     super();
     this.data = data;
     this.template = template;
     this.page = page;
     this.mainApi = mainApi;
     this.newsCardList = newsCardList;
+    this.savedNewsArray = savedNewsArray;
     this.setDataCard = this.setDataCard.bind(this);
     this._searchResultLoginAsk = this._searchResultLoginAsk.bind(this);
     this.renderIcon = this.renderIcon.bind(this);
@@ -21,77 +22,58 @@ export default class NewsCard extends BaseComponent {
   // отвечает за отрисовку иконки карточки. У этой иконки три состояния: иконка незалогиненного
   // пользователя, активная иконка залогиненного, неактивная иконка залогиненного.
   renderIcon(isLoggedIn) {
-    const cardMark = this.template.querySelector(".search-result__addIcon");
-    const deleteMark = this.template.querySelector(".search-result__deleteIcon");
-    // console.log(isLoggedIn, 3);
-    // console.log(cardMark, "render");
+    const cardMarks = this.page.querySelectorAll(".search-result__addIcon");
+    const deleteMarks = this.page.querySelectorAll(".search-result__deleteIcon");
 
     this.isLoggedIn = isLoggedIn;
-    if (isLoggedIn && cardMark) {
-      cardMark.classList.add("search-result__add-button");
-      this._iconActive();
-      // console.log(cardMark);
-    } else if (isLoggedIn && deleteMark) {
-      // console.log(deleteMark);
-      deleteMark.classList.add("search-result__delete-button");
-      deleteMark.classList.add("search-result__add-button");
-      this._searchResultLoginAsk();
-      this._iconActive();
+    if (isLoggedIn && cardMarks.length > 0) {
+      cardMarks.forEach((cardMark) => {
+        cardMark.classList.add("search-result__add-button");
+        this._iconActive(cardMark);
+      });
+    } else if (isLoggedIn && deleteMarks.length > 0) {
+      deleteMarks.forEach((deleteMark) => {
+        deleteMark.classList.add("search-result__delete-button");
+        deleteMark.classList.add("search-result__add-button");
+        this._searchResultLoginAsk(deleteMark);
+        this._iconActive(deleteMark);
+      });
     } else {
-      cardMark.classList.add("search-result__add-button");
-      this._searchResultLoginAsk();
+      cardMarks.forEach((cardMark) => {
+        cardMark.classList.add("search-result__add-button");
+        this._searchResultLoginAsk(cardMark);
+      });
     }
   }
 
   // слушатель на клик по иконке добавить себе (синяя заливка)
-  _iconActive() {
-    // console.log("icon here");
-    const cardsToListen = this.page.querySelectorAll(".search-result__icon");
-    // console.log(cardsToListen.length);
-    Array.from(cardsToListen).forEach((element) => {
-      element.addEventListener("click", () => {
-        if (element.classList.contains("search-result__add-button_active") || element.classList.contains("search-result__deleteIcon")) {
-          const card = element.closest(".search-result__card");
-          const id = card.getAttribute("id");
-          this.deleteArticle(id);
-          element.classList.remove("search-result__add-button_active");
-          console.log("delete this");
-          card.removeAttribute("id");
-        } else {
-          element.classList.add("search-result__add-button_active");
-          console.log("save here");
-          this.saveArticle(element);
+  _iconActive(mark) {
+    mark.addEventListener("click", () => {
+      if (mark.classList.contains("search-result__add-button_active") || mark.classList.contains("search-result__deleteIcon")) {
+        const card = mark.closest(".search-result__card");
+        const id = card.getAttribute("id");
+
+        this.deleteArticle(id);
+        mark.classList.remove("search-result__add-button_active");
+        card.removeAttribute("id");
+        if (mark.classList.contains("search-result__deleteIcon")) {
+          card.remove();
         }
-      });
-    });
+      } else {
+        mark.classList.add("search-result__add-button_active");
+        this.saveArticle(mark);
+      }
+    }, false);
   }
 
   // подсказка рядом с кнопкой удалить/добавить себе
-  _searchResultLoginAsk() {
-    const cardsToListen = this.page.querySelectorAll(".search-result__card");
-    cardsToListen.forEach((card) => {
-      const addButton = card.querySelector(".search-result__addIcon");
-      const deleteButton = card.querySelector(".search-result__deleteIcon");
-      const loginAsk = card.querySelector(".search-result__login-ask");
-      // console.log("232323");
-
-      if (addButton) {
-        // console.log("addButton");
-        addButton.addEventListener("mouseover", () => {
-          loginAsk.classList.add("search-result__login-ask_on");
-        });
-        addButton.addEventListener("mouseout", () => {
-          loginAsk.classList.remove("search-result__login-ask_on");
-        });
-      } else if (deleteButton) {
-        // console.log(deleteButton);
-        deleteButton.addEventListener("mouseover", () => {
-          loginAsk.classList.add("search-result__login-ask_on");
-        });
-        deleteButton.addEventListener("mouseout", () => {
-          loginAsk.classList.remove("search-result__login-ask_on");
-        });
-      }
+  _searchResultLoginAsk(mark) {
+    this.mark = mark;
+    mark.addEventListener("mouseover", (event) => {
+      event.target.previousElementSibling.previousElementSibling.classList.add("search-result__login-ask_on");
+    });
+    mark.addEventListener("mouseout", (event) => {
+      event.target.previousElementSibling.previousElementSibling.classList.remove("search-result__login-ask_on");
     });
   }
 
@@ -103,60 +85,42 @@ export default class NewsCard extends BaseComponent {
       );
   }
 
-  setDataCard(isLoggedIn) {
+  setDataCard() {
+    const image = this.template.querySelector(".search-result__image");
+    const date = this.template.querySelector(".search-result__date");
+    const title = this.template.querySelector(".title__search-result-article");
+    const text = this.template.querySelector(".subtitle__article");
+    const source = this.template.querySelector(".search-result__source");
+    const link = this.template.querySelector(".search-result__info-box");
+    const tag = this.template.querySelector(".search-result__tag_on");
+
     if (this.data._id) {
-      // console.log(this.template);
       this.template.setAttribute("id", `${this.data._id}`);
-      this.template.querySelector(
-        ".search-result__tag_on",
-      ).textContent = this.data.keyword;
-      this.template.querySelector(
-        ".search-result__date",
-      ).textContent = this.data.date;
-      this.template.querySelector(
-        ".search-result__image",
-      ).src = this.data.image;
-      this.template.querySelector(
-        ".title__search-result-article",
-      ).textContent = this.data.title;
-      this.template.querySelector(
-        ".subtitle__article",
-      ).textContent = this.data.text;
-      this.template.querySelector(
-        ".search-result__source",
-      ).textContent = this.data.source;
+      tag.textContent = this.data.keyword;
+      date.textContent = this.data.date;
+      image.src = this.data.image;
+      title.textContent = this.data.title;
+      text.textContent = this.data.text;
+      source.textContent = this.data.source;
       this.template.querySelector(".search-result__info-box").setAttribute("onclick", `'${this.data.link}'`);
-      this.renderIcon(isLoggedIn);
     } else {
-      const date = this.data.publishedAt.value;
-      // console.log("444444");
-      this.template.querySelector(
-        ".search-result__image",
-      ).src = this.data.urlToImage;
-      this.template.querySelector(
-        ".search-result__date",
-      ).textContent = changeDate(date);
-      this.template.querySelector(
-        ".title__search-result-article",
-      ).textContent = this.data.title;
-      this.template.querySelector(
-        ".subtitle__article",
-      ).textContent = this.data.description;
-      this.template.querySelector(
-        ".search-result__source",
-      ).textContent = this.data.source.name;
-      this.template.querySelector(".search-result__info-box").setAttribute("onclick", `window.open('${this.data.url}')`);
-      this.renderIcon(isLoggedIn);
+      const newdate = this.data.publishedAt.value;
+
+      image.src = this.data.urlToImage;
+      date.textContent = changeDate(newdate);
+      title.textContent = this.data.title;
+      text.textContent = this.data.description;
+      source.textContent = this.data.source.name;
+      link.setAttribute("onclick", `window.open('${this.data.url}')`);
     }
   }
 
   // получить данные для отпрвки на сервер
   getDataToSaveArticle(event) {
     const card = event.closest(".search-result__card");
-    // console.log(this.newsCardList.renderTopic().toString());
 
     return {
-      keyword: this.newsCardList.renderTopic().toString(),
+      keyword: this.newsCardList.renderTopic().toString().toLowerCase(),
       image: card.querySelector(".search-result__image").src,
       date: card.querySelector(".search-result__date").textContent,
       title: card.querySelector(".title__search-result-article").textContent,
@@ -169,23 +133,22 @@ export default class NewsCard extends BaseComponent {
   //  запрос к api на сохранение карточки
   saveArticle(icon) {
     const card = icon.closest(".search-result__card");
-    // console.log(card, "save");
     const cardData = this.getDataToSaveArticle(card);
-    // console.log(cardData);
     this.mainApi.createArticle(cardData)
       .then((res) => {
         card.setAttribute("id", `${res.data._id}`);
       })
       .catch((err) => {
-        console.log(err);
+        throw new Error(err);
       });
   }
 
   // запрос к api на удаление карточки
   deleteArticle(articleId) {
     this.mainApi.removeArticle(articleId).then(() => {
-      console.log("удаление успешно");
     })
-      .catch((err) => { console.log(err); });
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 }

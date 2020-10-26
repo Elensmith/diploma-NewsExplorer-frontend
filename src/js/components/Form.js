@@ -31,10 +31,6 @@ export default class Form extends BaseComponent {
     this.reset = this.reset.bind(this);
     this._setServerError = this._setServerError.bind(this);
     this.isLoggedIn = false;
-    // this.form.querySelectorAll("input").forEach((input) => {
-    //   this._validateInputElement(input);
-    //   this._validateForm();
-    // });
   }
 
   getValues() {

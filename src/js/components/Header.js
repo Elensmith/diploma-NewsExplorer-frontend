@@ -1,6 +1,5 @@
 import BaseComponent from "./BaseComponent";
-// Класс, отвечающий за логику работы шапки сайта. Его конструктор принимает объект опций. В
-// опциях передайте цвет шапки, так как на разных страницах он может быть разный
+
 export default class Header extends BaseComponent {
   constructor(page) {
     super();
@@ -13,6 +12,77 @@ export default class Header extends BaseComponent {
     this.userName = this.page.querySelector(
       ".button__selected_with-name",
     );
+    this.userNameBorder = this.page.querySelector(".header__button_name");
+    this.logoutButton = this.page.querySelector(".button__logout");
+    this.buttonCloseMobileMenu = this.page.querySelector(
+      ".header__menu-mobile_close",
+    );
+    this.buttonMobileMenuMain = this.page.getElementById(
+      "header__menu-mobile-main-page",
+    );
+    this.mobileMenuMain = this.page.querySelector(".header__buttons");
+    this.headerMenu = this.page.querySelector(".header__menu");
+    this.headerLogo = this.page.querySelector(".header__logo");
+    this.addCloseButtonHeader = this.page.querySelector(
+      ".header__menu-mobile_close",
+    );
+    this.underlineBlack = this.page.getElementById("underline");
+    this.buttonMain = this.page.querySelectorAll(".button__main");
+    this.headerInfo = this.page.querySelector(".header__info");
+    this.searchResult = this.page.querySelector(".search-result");
+    this.buttonMobileMenuArticles = this.page.getElementById("header__menu-mobile-articles-page");
+  }
+
+  mobileMenuMainOpen() {
+    this.mobileMenuMain.classList.add("header__buttons_open");
+    this.headerMenu.classList.add("header_dark");
+    this.buttonMobileMenuMain.classList.add("header__menu-mobile_off");
+    this.addCloseButtonHeader.classList.add("header__menu-mobile_on");
+    this.headerInfo.classList.add("header__info_filter");
+    this.searchResult.classList.add("search-result_filter");
+  }
+
+  mobileMenuMainClose() {
+    this.mobileMenuMain.classList.toggle("header__buttons_open");
+    this.headerMenu.classList.toggle("header_dark");
+    this.buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
+    this.buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
+    this.headerInfo.classList.remove("header__info_filter");
+    this.searchResult.classList.remove("search-result_filter");
+  }
+
+  mobileMenuArticlesOpen() {
+    this.mobileMenuMain.classList.add("header__buttons_open");
+    this.headerMenu.classList.add("header_dark");
+    this.headerLogo.classList.add("button_white");
+    this.buttonMain.forEach((element) => {
+      element.classList.remove("button_black");
+    });
+    this.userName.classList.remove("button_black");
+    this.userNameBorder.classList.remove("button__selected_black");
+    this.logoutButton.classList.remove("button__logout_black");
+    this.buttonMobileMenuArticles.classList.add("header__menu-mobile_off");
+    this.addCloseButtonHeader.classList.add("header__menu-mobile_on");
+    this.underlineBlack.classList.remove("header__button_underline-black");
+    // this.headerInfo.classList.add("header__info_filter");
+    this.searchResult.classList.add("search-result_filter");
+  }
+
+  mobileMenuArticlesClose() {
+    this.mobileMenuMain.classList.remove("header__buttons_open");
+    this.headerMenu.classList.remove("header_dark");
+    this.headerLogo.classList.remove("button_white");
+    this.buttonMain.forEach((element) => {
+      element.classList.add("button_black");
+    });
+    this.userName.classList.add("button_black");
+    this.logoutButton.classList.add("button__logout_black");
+    this.userNameBorder.classList.add("button__selected_black");
+    this.buttonMobileMenuArticles.classList.remove("header__menu-mobile_off");
+    this.addCloseButtonHeader.classList.remove("header__menu-mobile_on");
+    this.underlineBlack.classList.remove("header__button_underline-black");
+    this.headerInfo.classList.add("header__info_filter");
+    this.searchResult.classList.remove("search-result_filter");
   }
 
   render(isLoggedIn, name) {
@@ -25,11 +95,6 @@ export default class Header extends BaseComponent {
       } else {
         this.userName.textContent = name;
       }
-    } else {
-      // this.buttonSaved.classList.add("header__button_off");
-      // this.buttonAuth.classList.remove("header__button_off");
-      // this.buttonWithName.classList.add("header__button_off");
-      // console.log(isLoggedIn);
     }
   }
 

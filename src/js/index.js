@@ -15,16 +15,14 @@ import {
 
 (() => {
   const {
-    API_KEY, NEWS_URL, MAIN_URL, TOKEN,
+    API_KEY, NEWS_URL, MAIN_URL, TOKEN, PAGE, TEMPLATE,
   } = constants;
 
   // дата сегодня
   const dateSevenDaysAgo = changeDateFormat(dateFromConverter());
   const dateToday = changeDateFormat(today());
 
-  const template = document.getElementById("card-template");
-  const page = document;
-  const buttonClose = document.querySelector(".popup__close");
+  const buttonClose = document.querySelectorAll(".popup__close");
   const buttonLogout = document.querySelector(".button__logout");
   const auth = document.getElementById("open-popupEnter");
   const registration = document.getElementById("open-popupRegistration");
@@ -38,13 +36,15 @@ import {
   const buttonCloseMobileMenu = document.querySelector(
     ".header__menu-mobile_close",
   );
-  const headerLogo = document.querySelector(".header__menu");
-  const addCloseButtonHeader = document.querySelector(
-    ".header__menu-mobile_close",
-  );
-  const mobileMenuMain = document.querySelector(".header__buttons");
-  const headerInfo = document.querySelector(".header__info");
-  const searchResult = document.querySelector(".search-result");
+  const popupOtherRegistration = document.getElementById("popup__other");
+  const popupUserAddedEnter = document.querySelector(".popup__other-registration_added");
+  // const headerMenu = document.querySelector(".header__menu");
+  // const addCloseButtonHeader = document.querySelector(
+  //   ".header__menu-mobile_close",
+  // );
+  // const mobileMenuMain = document.querySelector(".header__buttons");
+  // const headerInfo = document.querySelector(".header__info");
+  // const searchResult = document.querySelector(".search-result");
   let isLoggedIn = false;
 
   const mainApi = new MainApi(MAIN_URL);
@@ -56,7 +56,7 @@ import {
   const popupUserAdded = new Popup(
     document.getElementById("popupUserAdded"),
   );
-  const newsCard = new NewsCard("", template, "");
+  const newsCard = new NewsCard("", TEMPLATE, "");
   const validateEnterForm = new Form(enterForm, mainApi, popupEnter, newsCard, "");
   const validateRegistrationForm = new Form(
     registrationForm,
@@ -66,7 +66,7 @@ import {
     popupUserAdded,
   );
   const getTopicSearch = new Form(searchForm, "", "");
-  const header = new Header(page);
+  const header = new Header(PAGE);
 
   // проверка авторизации при загрузке страницы
   if (TOKEN) {
@@ -81,38 +81,57 @@ import {
         header.render(isLoggedIn, "");
       });
   }
+  //  валидация строки поиска
+  getTopicSearch.setEventListeners();
+  // выполнить вход после успешной регистрации
+  popupUserAddedEnter.addEventListener("click", () => {
+    popupUserAdded.close();
+    popupEnter.open(popupEnter);
+    validateEnterForm.setEventListeners();
+    // mobileMenuMain.classList.toggle("header__buttons_open");
+    // headerMenu.classList.toggle("header_dark");
+    buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
+  });
 
   // открыть мобильное меню
   buttonMobileMenuMain.addEventListener("click", () => {
-    mobileMenuMain.classList.add("header__buttons_open");
-    headerLogo.classList.add("header_dark");
-    buttonMobileMenuMain.classList.add("header__menu-mobile_off");
-    addCloseButtonHeader.classList.add("header__menu-mobile_on");
-    headerInfo.classList.add("header__info_filter");
-    searchResult.classList.add("search-result_filter");
+    header.mobileMenuMainOpen();
   });
   // закрыть мобильное меню
   buttonCloseMobileMenu.addEventListener("click", () => {
-    mobileMenuMain.classList.toggle("header__buttons_open");
-    headerLogo.classList.toggle("header_dark");
-    buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
-    buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
-    headerInfo.classList.remove("header__info_filter");
-    searchResult.classList.remove("search-result_filter");
+    header.mobileMenuMainClose();
   });
-  // закрыть попап
-  buttonClose.addEventListener("click", () => {
-    popupEnter.close();
-    validateEnterForm.reset();
-    buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
+
+  // закрыть попап по крестику
+  buttonClose.forEach((element) => {
+    element.addEventListener("click", () => {
+      popupEnter.close();
+      popupRegistration.close();
+      popupUserAdded.close();
+      validateEnterForm.reset();
+      validateRegistrationForm.reset();
+      buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
+    });
+  });
+
+  // закрыть попап ecs
+  document.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    if (event.code === "Escape") {
+      popupEnter.close();
+      popupRegistration.close();
+      popupUserAdded.close();
+      validateEnterForm.reset();
+      validateRegistrationForm.reset();
+    }
   });
 
   // открыть попап авторизации
   auth.addEventListener("click", () => {
     popupEnter.open(popupEnter);
     validateEnterForm.setEventListeners();
-    mobileMenuMain.classList.toggle("header__buttons_open");
-    headerLogo.classList.toggle("header_dark");
+    // mobileMenuMain.classList.toggle("header__buttons_open");
+    // headerMenu.classList.toggle("header_dark");
     buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
   });
   // открыть попап ренистрации (в попапе авторизации)
@@ -120,18 +139,21 @@ import {
     popupEnter.close(popupEnter);
     popupRegistration.open(popupRegistration);
     validateRegistrationForm.setEventListeners();
+    popupOtherRegistration.addEventListener("click", () => {
+      popupRegistration.close();
+      validateRegistrationForm.reset();
+      popupEnter.open(popupEnter);
+    });
   });
 
-  //  валидация строки поиска
-  getTopicSearch.setEventListeners();
   // поиск новостей (клик по кнопке "поиск")
   searchButton.addEventListener("click", () => {
     const newsCardList = new NewsCardList(
-      template,
+      TEMPLATE,
       newsApi,
       getTopicSearch,
-      (element, card) => new NewsCard(element, card, page, mainApi, newsCardList),
-      page,
+      (element, card) => new NewsCard(element, card, PAGE, mainApi, newsCardList, ""),
+      PAGE,
       isLoggedIn,
     );
 
@@ -142,12 +164,4 @@ import {
   buttonLogout.addEventListener("click", () => {
     header.logOut();
   });
-
-  // const buttonEnter = document.getElementById("button-submit-enter");
-  // buttonEnter.addEventListener("click", () => {
-  //   mainApi.signup();
-  // });
 })();
-
-// popup "Вы успешно зарегистрированы" можно открыть добавив popup_is-opened
-// (добавить закрыть и реакцию на клик)

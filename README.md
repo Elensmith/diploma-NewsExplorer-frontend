@@ -8,6 +8,6 @@
 
 - npm run build - версия для продакшн
 - npm run deploy -- загрузка на gh-pages
-- npm run dev -- запуск в режиме разработки
+- npm run dev -- запуск в режиме разработки (cors gh-pages only)
 
-### version 1.0.5
+### version 1.0.6

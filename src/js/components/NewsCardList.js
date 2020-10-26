@@ -1,3 +1,4 @@
+// import { bind } from "core-js/fn/function";
 import BaseComponent from "./BaseComponent";
 
 export default class NewsCardList extends BaseComponent {
@@ -15,59 +16,66 @@ export default class NewsCardList extends BaseComponent {
     this._renderNotFound = this._renderNotFound.bind(this);
     this._renderResults = this._renderResults.bind(this);
     this._renderError = this._renderError.bind(this);
+    this._clearSearchResultBlock = this._clearSearchResultBlock.bind(this);
+    this._openSearchResultBlock = this._openSearchResultBlock.bind(this);
+    this.clearTopic = this.clearTopic.bind(this);
     this.newsArray = [];
+    this.cardArr = document.querySelectorAll(".search-result__card");
     this.temp = this.page.getElementById("card-template").content;
     this.card = this.temp.querySelector(".search-result__card");
+    this.buttonShowMore = this.page.getElementById("search-result-show-more");
   }
 
   // поиск по api, складывает все в массив this.newsArray
   searchingNews() {
     this.topic = this.renderTopic();
 
+    this._renderLoader();
+    this._renderShowMoreButton();
+    if (this.cardArr.length > 0) {
+      this._clearSearchResultBlock();
+    }
+
     this.api
       .getNews(this.topic)
       .then((res) => {
-        setTimeout(() => {
-          this._renderLoader();
-        }, 1000);
-        return res;
-      })
-      .then((res) => {
-        this._renderLoader();
         this._openSearchResultBlock();
         this._renderShowMoreButton();
         res.forEach((element) => {
           this.newsArray.push(element);
         });
-        this._renderResults();
+        this._renderResults(this.newsArray);
+        this._renderLoader();
       })
       .then(() => {
         if (this.newsArray.length === 0) {
           this._openSearchResultBlock();
-          setTimeout(() => {
-            this._renderNotFound();
-          }, 1001);
+          this._renderNotFound();
         }
       })
       .catch((err) => {
         this._openSearchResultBlock();
+        this._renderLoader();
         this._renderError();
         throw new Error(err);
       });
   }
 
   // отрисовывает карточки по 3 штуки;
-  _renderResults() {
+  _renderResults(news) {
+    this.news = news;
     const threeNews = 3;
     let newsChunks;
-    if (this.newsArray.length > threeNews) {
-      newsChunks = this.newsArray.splice(0, threeNews);
+    if (this.news.length > threeNews) {
+      newsChunks = this.news.splice(0, threeNews);
       newsChunks.forEach((element) => {
         this.addCard(element);
       });
-      this._showMore();
-    } else if (this.newsArray.length >= 1 && this.newsArray.length < 3) {
-      this.newsArray.forEach((element) => {
+      this.newCard.renderIcon(this.isLoggedIn);
+      this._showMore(this.news);
+    } else {
+      newsChunks = this.news;
+      this.news.forEach((element) => {
         this.addCard(element);
       });
     }
@@ -97,7 +105,7 @@ export default class NewsCardList extends BaseComponent {
   _renderShowMoreButton() {
     this.page
       .getElementById("search-result-show-more")
-      .classList.toggle("button__search-result_on");
+      .classList.add("button__search-result_on");
   }
 
   // получение слова из строки поиска новостей
@@ -107,15 +115,22 @@ export default class NewsCardList extends BaseComponent {
     return this.topic;
   }
 
+  clearTopic() {
+    this.topicValue = this.getTopicSearch.getValues();
+    this.topic = Object.values(this.topicValue);
+    this.topic = "";
+    return this.topic;
+  }
+
   // функциональность кнопки «Показать ещё»
-  _showMore() {
-    const buttonShowMore = this.page.getElementById("search-result-show-more");
-    this._addListener(buttonShowMore, "click", (event) => {
+  _showMore(news) {
+    // const buttonShowMore = this.page.getElementById("search-result-show-more");
+    this._addListener(this.buttonShowMore, "click", (event) => {
       event.stopImmediatePropagation();
       if (this.newsArray.length <= 3) {
-        buttonShowMore.classList.remove("button__search-result_on");
+        this.buttonShowMore.classList.remove("button__search-result_on");
       }
-      this._renderResults();
+      this._renderResults(news);
     });
   }
 
@@ -123,12 +138,19 @@ export default class NewsCardList extends BaseComponent {
   addCard(element) {
     this.newCard = this.newsCard(element, this.card);
 
-    this.newCard.setDataCard(this.isLoggedIn);
+    this.newCard.setDataCard(this.isLoggedIn, this.card);
     this.newCard.createCard();
-    // this.newCard.renderIcon(this.isLoggedIn);
   }
 
   _renderError() {
     this.page.getElementById("search-result__error-text").textContent = "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
+  }
+
+  // очищает блок результатов прошлого поиска
+  _clearSearchResultBlock() {
+    this._openSearchResultBlock();
+    this.cardArr.forEach((card) => {
+      card.remove();
+    });
   }
 }

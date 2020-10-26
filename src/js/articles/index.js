@@ -4,28 +4,48 @@ import Header from "../components/Header";
 import constants from "../constants/constants";
 import NewsCard from "../components/NewsCard";
 import NewsCardList from "../components/NewsCardList";
+import helpers from "../utils/helpers";
 
 (() => {
   const {
-    API_KEY, NEWS_URL, MAIN_URL, TOKEN,
+    MAIN_URL, TOKEN, PAGE, TEMPLATE,
   } = constants;
+  const { bigLetter } = helpers;
   const mainApi = new MainApi(MAIN_URL);
   let isLoggedIn = true;
-  const page = document;
-  const amountSavedArticles = document.getElementById("header__info_amoumt-articles");
+  // const mobileMenuMain = document.querySelector(".header__buttons");
+  // const headerMenu = document.querySelector(".header__menu");
   const savedNewsArray = [];
   const arrayKeywords = [];
-  const template = document.getElementById("card-template");
-  const header = new Header(page);
+  const buttonMobileMenuArticles = document.getElementById("header__menu-mobile-articles-page");
+  // const addCloseButtonHeader = document.querySelector(
+  //   ".header__menu-mobile_close",
+  // );
+  const buttonCloseMobileMenu = document.querySelector(
+    ".header__menu-mobile_close",
+  );
+  const buttonLogout = document.querySelector(".button__logout");
+  // const searchResult = document.querySelector(".search-result");
+  // const headerInfo = document.querySelector(".header__info");
+  const header = new Header(PAGE);
   const newsCardList = new NewsCardList(
-    template,
+    TEMPLATE,
     "",
     "",
-    (element, card) => new NewsCard(element, card, page, mainApi, newsCardList),
-    page,
+    (element, card) => new NewsCard(element, card, PAGE, mainApi, newsCardList, savedNewsArray),
+    PAGE,
     isLoggedIn,
   );
+  const newsCard = new NewsCard("", "", PAGE, mainApi, "", "");
+  // инфа о статьях и имя
+  const amountSavedArticles = document.getElementById("header__info_amoumt-articles");
   const savedName = document.getElementById("header__info-name");
+  const firstTagWord = document.getElementById("header__tag-main");
+  const secondTagWord = document.getElementById("header__tag-second");
+  const thirdTagWord = document.getElementById("header__tag-other");
+  const commaTagWord = document.getElementById("header__tag-comma");
+  const andTagWord = document.getElementById("header__tag-and");
+  const otherTagWord = document.getElementById("header__tag-word");
 
   // проверка токена, если нет - переместим на главную
   if (TOKEN) {
@@ -43,9 +63,21 @@ import NewsCardList from "../components/NewsCardList";
   } else {
     document.location.replace("./index.html");
   }
-  // setTimeout(() => {
-  //   console.log(isLoggedIn);
-  // }, 1001);
+
+  // открыть мобильное меню
+  buttonMobileMenuArticles.addEventListener("click", () => {
+    header.mobileMenuArticlesOpen();
+  });
+
+  // закрыть мобильное меню
+  buttonCloseMobileMenu.addEventListener("click", () => {
+    header.mobileMenuArticlesClose();
+  });
+
+  // выход из профиля
+  buttonLogout.addEventListener("click", () => {
+    header.logOut();
+  });
 
   // отрисовка информации о сохраненных статьях
   function showAmount(length) {
@@ -60,64 +92,57 @@ import NewsCardList from "../components/NewsCardList";
     });
   })
     .then(() => {
-      if (savedNewsArray.length > 0) {
+      if (savedNewsArray.length === 0) {
+        showAmount(savedNewsArray.length);
+      } else if (savedNewsArray.length > 0) {
         showAmount(savedNewsArray.length);
         newsCardList._openSearchResultBlock();
         savedNewsArray.forEach((element) => {
           newsCardList.addCard(element);
         });
+        newsCard.renderIcon(isLoggedIn);
       }
     }).catch((err) => {
-      console.log(err);
+      throw new Error(err);
     });
 
-  // function arr() {
-  //   let arr = arrayKeywords;
+  // отсрочка чтобы успели прийти в дом теги
+  setTimeout(() => {
+    // подсчет количества повторов тэгов
+    const array = arrayKeywords.reduce((obj, item) => {
+      if (!obj[item]) {
+        obj[item] = 0;
+      }
+      obj[item]++;
+      return obj;
+    }, {});
 
-  //     const res = [];
-  //     arrayKeywords.forEach((el) => {
-  //       res.push(el);
-  //       // console.log(el);
-  //     });
-  //     for (let len = arr.length, i = len; --i >= 0;) {
-  //       if (arr[arr[i]]) {
-  //         arr[arr[i]] += 1;
-  //         arr.splice(i, 1);
+    // перевод объекта в массив и сортировка по убыванию повторов
+    const sortable = Object.entries(array)
+      .sort(([, a], [, b]) => b - a)
+      .reduce((previous, [key, value]) => ({ ...previous, [key]: value }), {});
 
-  //       } else {
-  //         arr[arr[i]] = 1;
-  //       }
-  //     }
-  //     arr.sort(function (a, b) {
-  //       return arr[b] - arr[a];
-  //     });
-  // }
-  // console.log(arr());
-
-  // const taggs = ["яблоки", "фара", "мыло", "фара", "фара", "яблоки", "кролик"];
-  // const array = taggs.reduce(function (obj, item, index, array) {
-  //   if (!obj[item]) {
-  //     obj[item] = 0;
-  //   }
-  //   // console.log(item);
-  //   obj[item]++;
-
-  //   return obj, index, array;
-  // }, {})
-  // console.table(array);
-
-  // let originalLog = console.log;
-  // console.log = (a) => {
-  //   originalLog(JSON.parse(JSON.stringify(a)));
-  // };
-  // console.log(setTimeout(() => {
-  //   console.log(arrayKeywords[2]);
-  // }, 5000));
+    // отображение количества ключевых слов
+    const tagWord = Object.keys(sortable);
+    if (tagWord.length > 3) {
+      firstTagWord.textContent = bigLetter(tagWord[0]);
+      secondTagWord.textContent = bigLetter(tagWord[1]);
+      thirdTagWord.textContent = tagWord.length - 2;
+      commaTagWord.textContent = ",";
+      andTagWord.textContent = "и";
+      otherTagWord.textContent = "другим";
+    } else if (tagWord.length === 3) {
+      firstTagWord.textContent = bigLetter(tagWord[0]);
+      secondTagWord.textContent = bigLetter(tagWord[1]);
+      thirdTagWord.textContent = bigLetter(tagWord[2]);
+      commaTagWord.textContent = ",";
+      andTagWord.textContent = "и";
+    } else if (tagWord.length === 2) {
+      firstTagWord.textContent = bigLetter(tagWord[0]);
+      secondTagWord.textContent = bigLetter(tagWord[1]);
+      commaTagWord.textContent = ",";
+    } else if (tagWord.length === 1) {
+      firstTagWord.textContent = bigLetter(tagWord[0]);
+    }
+  }, 1000);
 })();
-
-// сортирует по алфавиту
-// const taggs = ["яблоки", "фара", "мыло", "фара", "фара", "яблоки", "кролик"];
-// const array = taggs.sort(function (last, next) {
-//   return last > next ? 1 : -1;
-// })
-// console.log(array);

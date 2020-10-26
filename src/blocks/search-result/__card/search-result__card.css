@@ -3,7 +3,6 @@
 .search-result__card {
   display: flex;
   flex-direction: column;
-
   border-radius: 0 0 1.25rem 1.25rem;
   background-color: white;
   max-width: 25rem;

@@ -3,6 +3,7 @@
 @import url(./_off/header__button_off.css);
 @import url(./_auth/header__button_auth.css);
 @import url(./_saved/header__button_saved.css);
+@import url(./_name/header__button_name.css);
 
 .header__button {
   display: flex;

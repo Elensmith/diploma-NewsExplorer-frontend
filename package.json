@@ -1,6 +1,6 @@
 {
   "name": "diploma-newsexplorer-frontend",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
-    "core-js": "3.4.1"
+    "core-js": "3.4.1",
+    "cors": "^2.8.5"
   }
 }

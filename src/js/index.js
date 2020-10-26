@@ -1,81 +1,167 @@
 import "../css/style.css";
+import MainApi from "./api/MainApi";
+import NewsApi from "./api/NewsApi";
+import Popup from "./components/Popup";
+import Form from "./components/Form";
+import NewsCard from "./components/NewsCard";
+import NewsCardList from "./components/NewsCardList";
+import Header from "./components/Header";
+import constants from "./constants/constants";
+import {
+  dateFromConverter,
+  changeDateFormat,
+  today,
+} from "./utils/dateConverter";
 
-// клик по "Показать еще" = добавится одна карточка (мало, да, но потом сделаю норм)
-// все кнопки в хедере для образца, в мобильной надо закомментировать лишние, иначе не влезают
-// клик по "Авторизоваться" = открыть попап авторизиции
-// клик по "Зарегистрироваься" в попапе Авторизации = открыть попап Регистрации
+(() => {
+  const {
+    API_KEY, NEWS_URL, MAIN_URL, TOKEN, PAGE, TEMPLATE,
+  } = constants;
 
-// иконки "Сохранить себе и Мусорка" только в одном состоянии,
-// потом сделаю шаблон с бэкграудом где они будут меняться
+  // дата сегодня
+  const dateSevenDaysAgo = changeDateFormat(dateFromConverter());
+  const dateToday = changeDateFormat(today());
 
-// popup "Вы успешно зарегистрированы" можно открыть добавив popup_is-opened
-// (добавить закрыть и реакцию на клик)
+  const buttonClose = document.querySelectorAll(".popup__close");
+  const buttonLogout = document.querySelector(".button__logout");
+  const auth = document.getElementById("open-popupEnter");
+  const registration = document.getElementById("open-popupRegistration");
+  const enterForm = document.getElementById("form-enter");
+  const searchForm = document.getElementById("form-search");
+  const registrationForm = document.getElementById("form-registration");
+  const searchButton = document.getElementById("search-button");
+  const buttonMobileMenuMain = document.getElementById(
+    "header__menu-mobile-main-page",
+  );
+  const buttonCloseMobileMenu = document.querySelector(
+    ".header__menu-mobile_close",
+  );
+  const popupOtherRegistration = document.getElementById("popup__other");
+  const popupUserAddedEnter = document.querySelector(".popup__other-registration_added");
+  // const headerMenu = document.querySelector(".header__menu");
+  // const addCloseButtonHeader = document.querySelector(
+  //   ".header__menu-mobile_close",
+  // );
+  // const mobileMenuMain = document.querySelector(".header__buttons");
+  // const headerInfo = document.querySelector(".header__info");
+  // const searchResult = document.querySelector(".search-result");
+  let isLoggedIn = false;
 
-const popup = document.querySelector(".popup");
-const buttonClose = document.querySelector(".popup__close");
-const popupEnter = document.getElementById("popup__enter");
-const auth = document.getElementById("open-popupEnter");
-const registration = document.getElementById("open-popupRegistration");
-const popupRegistration = document.getElementById("popupRegistration");
-const searchButton = document.getElementById("search-button");
-const preloaderSearching = document.getElementById("preloader-searching");
-const preloaderNotFound = document.getElementById("preloader-not-found");
-const showMoreResult = document.getElementById("search-result-show-more");
-const moreCards = document.querySelector(".search-result__card_off");
-const buttonMobileMenuMain = document.getElementById(
-  "header__menu-mobile-main-page",
-);
-const buttonCloseMobileMenu = document.querySelector(
-  ".header__menu-mobile_close",
-);
-const headerLogo = document.querySelector(".header__menu");
-const addCloseButtonHeader = document.querySelector(
-  ".header__menu-mobile_close",
-);
-const mobileMenuMain = document.querySelector(".header__buttons");
-const headerInfo = document.querySelector(".header__info");
-const searchResult = document.querySelector(".search-result");
+  const mainApi = new MainApi(MAIN_URL);
+  const newsApi = new NewsApi(NEWS_URL, API_KEY, dateSevenDaysAgo, dateToday);
+  const popupEnter = new Popup(document.getElementById("popup__enter"));
+  const popupRegistration = new Popup(
+    document.getElementById("popupRegistration"),
+  );
+  const popupUserAdded = new Popup(
+    document.getElementById("popupUserAdded"),
+  );
+  const newsCard = new NewsCard("", TEMPLATE, "");
+  const validateEnterForm = new Form(enterForm, mainApi, popupEnter, newsCard, "");
+  const validateRegistrationForm = new Form(
+    registrationForm,
+    mainApi,
+    popupRegistration,
+    newsCard,
+    popupUserAdded,
+  );
+  const getTopicSearch = new Form(searchForm, "", "");
+  const header = new Header(PAGE);
 
-buttonMobileMenuMain.addEventListener("click", () => {
-  mobileMenuMain.classList.add("header__buttons_open");
-  headerLogo.classList.add("header_dark");
-  buttonMobileMenuMain.classList.add("header__menu-mobile_off");
-  addCloseButtonHeader.classList.add("header__menu-mobile_on");
-  headerInfo.classList.add("header__info_filter");
-  searchResult.classList.add("search-result_filter");
-});
+  // проверка авторизации при загрузке страницы
+  if (TOKEN) {
+    mainApi
+      .getUserData(TOKEN)
+      .then((data) => {
+        isLoggedIn = true;
+        header.render(isLoggedIn, data.name);
+      })
+      .catch(() => {
+        isLoggedIn = false;
+        header.render(isLoggedIn, "");
+      });
+  }
+  //  валидация строки поиска
+  getTopicSearch.setEventListeners();
+  // выполнить вход после успешной регистрации
+  popupUserAddedEnter.addEventListener("click", () => {
+    popupUserAdded.close();
+    popupEnter.open(popupEnter);
+    validateEnterForm.setEventListeners();
+    // mobileMenuMain.classList.toggle("header__buttons_open");
+    // headerMenu.classList.toggle("header_dark");
+    buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
+  });
 
-buttonCloseMobileMenu.addEventListener("click", () => {
-  mobileMenuMain.classList.toggle("header__buttons_open");
-  headerLogo.classList.toggle("header_dark");
-  buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
-  buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
-  headerInfo.classList.remove("header__info_filter");
-  searchResult.classList.remove("search-result_filter");
-});
+  // открыть мобильное меню
+  buttonMobileMenuMain.addEventListener("click", () => {
+    header.mobileMenuMainOpen();
+  });
+  // закрыть мобильное меню
+  buttonCloseMobileMenu.addEventListener("click", () => {
+    header.mobileMenuMainClose();
+  });
 
-buttonClose.addEventListener("click", () => {
-  popup.classList.remove("popup_is-opened");
-  buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
-});
+  // закрыть попап по крестику
+  buttonClose.forEach((element) => {
+    element.addEventListener("click", () => {
+      popupEnter.close();
+      popupRegistration.close();
+      popupUserAdded.close();
+      validateEnterForm.reset();
+      validateRegistrationForm.reset();
+      buttonMobileMenuMain.classList.toggle("header__menu-mobile_off");
+    });
+  });
 
-auth.addEventListener("click", () => {
-  popupEnter.classList.add("popup_is-opened");
-  mobileMenuMain.classList.toggle("header__buttons_open");
-  headerLogo.classList.toggle("header_dark");
-  buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
-});
+  // закрыть попап ecs
+  document.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    if (event.code === "Escape") {
+      popupEnter.close();
+      popupRegistration.close();
+      popupUserAdded.close();
+      validateEnterForm.reset();
+      validateRegistrationForm.reset();
+    }
+  });
 
-registration.addEventListener("click", () => {
-  popupRegistration.classList.add("popup_is-opened");
-  popupEnter.classList.remove("popup_is-opened");
-});
+  // открыть попап авторизации
+  auth.addEventListener("click", () => {
+    popupEnter.open(popupEnter);
+    validateEnterForm.setEventListeners();
+    // mobileMenuMain.classList.toggle("header__buttons_open");
+    // headerMenu.classList.toggle("header_dark");
+    buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
+  });
+  // открыть попап ренистрации (в попапе авторизации)
+  registration.addEventListener("click", () => {
+    popupEnter.close(popupEnter);
+    popupRegistration.open(popupRegistration);
+    validateRegistrationForm.setEventListeners();
+    popupOtherRegistration.addEventListener("click", () => {
+      popupRegistration.close();
+      validateRegistrationForm.reset();
+      popupEnter.open(popupEnter);
+    });
+  });
 
-searchButton.addEventListener("click", () => {
-  preloaderSearching.classList.add("preloader_on");
-  preloaderNotFound.classList.add("preloader_on");
-});
+  // поиск новостей (клик по кнопке "поиск")
+  searchButton.addEventListener("click", () => {
+    const newsCardList = new NewsCardList(
+      TEMPLATE,
+      newsApi,
+      getTopicSearch,
+      (element, card) => new NewsCard(element, card, PAGE, mainApi, newsCardList, ""),
+      PAGE,
+      isLoggedIn,
+    );
 
-showMoreResult.addEventListener("click", () => {
-  moreCards.classList.remove("search-result__card_off");
-});
+    newsCardList.searchingNews();
+  });
+
+  // выход из профиля
+  buttonLogout.addEventListener("click", () => {
+    header.logOut();
+  });
+})();

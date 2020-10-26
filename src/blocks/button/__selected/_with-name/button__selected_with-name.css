@@ -1,6 +1,7 @@
 .button__selected.button__selected_with-name {
-  display: grid;
-  justify-content: center;
-  grid-auto-flow: column;
-  grid-gap: 0.75rem;
+  color: white;
+  margin: 0;
+}
+p {
+  margin: 0;
 }

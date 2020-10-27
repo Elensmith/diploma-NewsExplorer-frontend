@@ -11,5 +11,6 @@
 - npm run dev -- запуск в режиме разработки (cors gh-pages only)
 
 ###  https://elensmith.github.io/diploma-NewsExplorer-frontend
+###  https://www.elena-k.tk/
 
 ### version 1.0.6

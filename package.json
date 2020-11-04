@@ -1,7 +1,7 @@
 {
   "name": "diploma-newsexplorer-frontend",
-  "version": "1.0.6",
-  "description": "",
+  "version": "1.0.7",
+  "description": "NewsExplorer - сервис поиска новостей. Дипломный проект для Яндекс.Практикум. Фронтенд",
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production rimraf dist && webpack --mode production",

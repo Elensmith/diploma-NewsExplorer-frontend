@@ -22,7 +22,7 @@ import {
   const dateSevenDaysAgo = changeDateFormat(dateFromConverter());
   const dateToday = changeDateFormat(today());
 
-  const buttonClose = document.querySelectorAll(".popup__close");
+  const buttonsClose = document.querySelectorAll(".popup__close");
   const buttonLogout = document.querySelector(".button__logout");
   const auth = document.getElementById("open-popupEnter");
   const registration = document.getElementById("open-popupRegistration");
@@ -38,13 +38,6 @@ import {
   );
   const popupOtherRegistration = document.getElementById("popup__other");
   const popupUserAddedEnter = document.querySelector(".popup__other-registration_added");
-  // const headerMenu = document.querySelector(".header__menu");
-  // const addCloseButtonHeader = document.querySelector(
-  //   ".header__menu-mobile_close",
-  // );
-  // const mobileMenuMain = document.querySelector(".header__buttons");
-  // const headerInfo = document.querySelector(".header__info");
-  // const searchResult = document.querySelector(".search-result");
   let isLoggedIn = false;
 
   const mainApi = new MainApi(MAIN_URL);
@@ -82,14 +75,13 @@ import {
       });
   }
   //  валидация строки поиска
-  getTopicSearch.setEventListeners();
+  getTopicSearch.getInfo();
+
   // выполнить вход после успешной регистрации
   popupUserAddedEnter.addEventListener("click", () => {
     popupUserAdded.close();
     popupEnter.open(popupEnter);
     validateEnterForm.setEventListeners();
-    // mobileMenuMain.classList.toggle("header__buttons_open");
-    // headerMenu.classList.toggle("header_dark");
     buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
   });
 
@@ -103,7 +95,7 @@ import {
   });
 
   // закрыть попап по крестику
-  buttonClose.forEach((element) => {
+  buttonsClose.forEach((element) => {
     element.addEventListener("click", () => {
       popupEnter.close();
       popupRegistration.close();
@@ -129,16 +121,14 @@ import {
   // открыть попап авторизации
   auth.addEventListener("click", () => {
     popupEnter.open(popupEnter);
-    validateEnterForm.setEventListeners();
-    // mobileMenuMain.classList.toggle("header__buttons_open");
-    // headerMenu.classList.toggle("header_dark");
+    validateEnterForm.getInfo();
     buttonCloseMobileMenu.classList.remove("header__menu-mobile_on");
   });
   // открыть попап ренистрации (в попапе авторизации)
   registration.addEventListener("click", () => {
     popupEnter.close(popupEnter);
     popupRegistration.open(popupRegistration);
-    validateRegistrationForm.setEventListeners();
+    validateRegistrationForm.getInfo();
     popupOtherRegistration.addEventListener("click", () => {
       popupRegistration.close();
       validateRegistrationForm.reset();

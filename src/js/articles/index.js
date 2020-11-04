@@ -13,20 +13,14 @@ import helpers from "../utils/helpers";
   const { bigLetter } = helpers;
   const mainApi = new MainApi(MAIN_URL);
   let isLoggedIn = true;
-  // const mobileMenuMain = document.querySelector(".header__buttons");
-  // const headerMenu = document.querySelector(".header__menu");
   const savedNewsArray = [];
   const arrayKeywords = [];
   const buttonMobileMenuArticles = document.getElementById("header__menu-mobile-articles-page");
-  // const addCloseButtonHeader = document.querySelector(
-  //   ".header__menu-mobile_close",
-  // );
   const buttonCloseMobileMenu = document.querySelector(
     ".header__menu-mobile_close",
   );
   const buttonLogout = document.querySelector(".button__logout");
-  // const searchResult = document.querySelector(".search-result");
-  // const headerInfo = document.querySelector(".header__info");
+
   const header = new Header(PAGE);
   const newsCardList = new NewsCardList(
     TEMPLATE,

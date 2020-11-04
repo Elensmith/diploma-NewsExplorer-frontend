@@ -33,6 +33,7 @@ export default class NewsCardList extends BaseComponent {
     this._renderLoader();
     this._renderShowMoreButton();
     if (this.cardArr.length > 0) {
+      this.newsArray = [];
       this._clearSearchResultBlock();
     }
 
@@ -44,7 +45,7 @@ export default class NewsCardList extends BaseComponent {
         res.forEach((element) => {
           this.newsArray.push(element);
         });
-        this._renderResults(this.newsArray);
+        this._renderResults();
         this._renderLoader();
       })
       .then(() => {
@@ -62,20 +63,19 @@ export default class NewsCardList extends BaseComponent {
   }
 
   // отрисовывает карточки по 3 штуки;
-  _renderResults(news) {
-    this.news = news;
+  _renderResults() {
     const threeNews = 3;
-    let newsChunks;
-    if (this.news.length > threeNews) {
-      newsChunks = this.news.splice(0, threeNews);
+    let newsChunks = [];
+    if (this.newsArray.length > threeNews) {
+      newsChunks = this.newsArray.splice(0, threeNews);
       newsChunks.forEach((element) => {
         this.addCard(element);
       });
       this.newCard.renderIcon(this.isLoggedIn);
-      this._showMore(this.news);
+      this._showMore();
     } else {
-      newsChunks = this.news;
-      this.news.forEach((element) => {
+      newsChunks = this.newsArray;
+      this.newsArray.forEach((element) => {
         this.addCard(element);
       });
     }
@@ -123,14 +123,14 @@ export default class NewsCardList extends BaseComponent {
   }
 
   // функциональность кнопки «Показать ещё»
-  _showMore(news) {
-    // const buttonShowMore = this.page.getElementById("search-result-show-more");
+  _showMore() {
+    if (this.newsArray.length <= 3) {
+      this.buttonShowMore.classList.remove("button__search-result_on");
+    }
     this._addListener(this.buttonShowMore, "click", (event) => {
-      event.stopImmediatePropagation();
-      if (this.newsArray.length <= 3) {
-        this.buttonShowMore.classList.remove("button__search-result_on");
-      }
-      this._renderResults(news);
+      event.stopPropagation();
+      // event.stopImmediatePropagation();
+      this._renderResults();
     });
   }
 

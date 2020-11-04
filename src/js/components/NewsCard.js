@@ -17,6 +17,9 @@ export default class NewsCard extends BaseComponent {
     this._iconActive = this._iconActive.bind(this);
     this.saveArticle = this.saveArticle.bind(this);
     this.getDataToSaveArticle = this.getDataToSaveArticle.bind(this);
+    this._handlerIconActive = this._handlerIconActive.bind(this);
+    this._handlerLoginAskOn = this._handlerLoginAskOn.bind(this);
+    this._handlerLoginAskOff = this._handlerLoginAskOff.bind(this);
   }
 
   // отвечает за отрисовку иконки карточки. У этой иконки три состояния: иконка незалогиненного
@@ -48,33 +51,13 @@ export default class NewsCard extends BaseComponent {
 
   // слушатель на клик по иконке добавить себе (синяя заливка)
   _iconActive(mark) {
-    mark.addEventListener("click", () => {
-      if (mark.classList.contains("search-result__add-button_active") || mark.classList.contains("search-result__deleteIcon")) {
-        const card = mark.closest(".search-result__card");
-        const id = card.getAttribute("id");
-
-        this.deleteArticle(id);
-        mark.classList.remove("search-result__add-button_active");
-        card.removeAttribute("id");
-        if (mark.classList.contains("search-result__deleteIcon")) {
-          card.remove();
-        }
-      } else {
-        mark.classList.add("search-result__add-button_active");
-        this.saveArticle(mark);
-      }
-    }, false);
+    this._addListener(mark, "click", () => this._handlerIconActive(mark));
   }
 
   // подсказка рядом с кнопкой удалить/добавить себе
   _searchResultLoginAsk(mark) {
-    this.mark = mark;
-    mark.addEventListener("mouseover", (event) => {
-      event.target.previousElementSibling.previousElementSibling.classList.add("search-result__login-ask_on");
-    });
-    mark.addEventListener("mouseout", (event) => {
-      event.target.previousElementSibling.previousElementSibling.classList.remove("search-result__login-ask_on");
-    });
+    this._addListener(mark, "mouseover", (event) => this._handlerLoginAskOn(event));
+    this._addListener(mark, "mouseout", (event) => this._handlerLoginAskOff(event));
   }
 
   createCard() {
@@ -137,6 +120,7 @@ export default class NewsCard extends BaseComponent {
     this.mainApi.createArticle(cardData)
       .then((res) => {
         card.setAttribute("id", `${res.data._id}`);
+        icon.classList.add("search-result__add-button_active");
       })
       .catch((err) => {
         throw new Error(err);
@@ -144,11 +128,37 @@ export default class NewsCard extends BaseComponent {
   }
 
   // запрос к api на удаление карточки
-  deleteArticle(articleId) {
+  deleteArticle(articleId, mark, card) {
     this.mainApi.removeArticle(articleId).then(() => {
+      mark.classList.remove("search-result__add-button_active");
+      card.removeAttribute("id");
+      if (mark.classList.contains("search-result__deleteIcon")) {
+        card.remove();
+      }
     })
       .catch((err) => {
         throw new Error(err);
       });
+  }
+
+  _handlerIconActive(mark) {
+    if (mark.classList.contains("search-result__add-button_active") || mark.classList.contains("search-result__deleteIcon")) {
+      const card = mark.closest(".search-result__card");
+      const id = card.getAttribute("id");
+
+      this.deleteArticle(id, mark, card);
+    } else {
+      this.saveArticle(mark);
+    }
+  }
+
+  _handlerLoginAskOn(event) {
+    this.event = event;
+    event.target.previousElementSibling.previousElementSibling.classList.add("search-result__login-ask_on");
+  }
+
+  _handlerLoginAskOff(event) {
+    this.event = event;
+    event.target.previousElementSibling.previousElementSibling.classList.remove("search-result__login-ask_on");
   }
 }

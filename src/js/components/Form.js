@@ -22,7 +22,7 @@ export default class Form extends BaseComponent {
     this.popupUserAdded = popupUserAdded;
     this.buttonSubmit = this.form.querySelector(".button");
     this._validateForm = this._validateForm.bind(this);
-    this._validateInputs = this._validateInputs.bind(this);
+    this._validateInput = this._validateInput.bind(this);
     this.getInfo = this.getInfo.bind(this);
     this._cleanErrors = this._cleanErrors.bind(this);
     this._cleanInputs = this._cleanInputs.bind(this);
@@ -43,27 +43,16 @@ export default class Form extends BaseComponent {
     return values;
   }
 
-  // вспомогательный метод, возвращает данные формы
+  // находит инпуты в форме и отправляет их на валидацию
   getInfo() {
-    const inputs = [];
-    Array.from(this.form.elements).forEach((imput) => {
-      if (imput.nodeName === "INPUT") {
-        inputs.push(imput);
-        // imput.addEventListener("input", () => this._validateInputElement());
-        this._addListener(this.input, "input", this._validateInputs());
+    Array.from(this.form.elements).forEach((input) => {
+      if (input.nodeName === "INPUT") {
+        this._addListener(input, "input", () => {
+          this._validateInput(input);
+          this._validateForm();
+        });
       }
     });
-    //   // this.form.addEventListener("input", ()
-    //   const inputs = this.form.querySelectorAll("input");
-    //   // this.form.addEventListener("input", () => {
-    //   inputs.forEach((input) => {
-    //     valuesInput[input.name] = input.value;
-    //     // input._validateInputElement();
-    //     this._validateInputElement();
-    //   });
-    //   // });
-    //   // this._validateForm();
-    return inputs;
   }
 
   setEventListeners() {
@@ -80,7 +69,6 @@ export default class Form extends BaseComponent {
           this.popupUserAdded.open();
           this.reset();
           this.isLoggedIn = false;
-          // this.card.renderIcon(this.isLoggedIn);
         })
         .catch((err) => {
           throw new Error(err);
@@ -101,11 +89,6 @@ export default class Form extends BaseComponent {
         });
     }
   }
-  // const inputs = this.form.querySelectorAll("input");
-  // inputs.forEach((input) => {
-  //   this._addListener(input, "input", this._validateForm);
-  //   return inputs;
-  // });
 
   //  добавляет форме ошибку, пришедшую с сервера
   _setServerError(err) {
@@ -119,36 +102,33 @@ export default class Form extends BaseComponent {
     }
   }
 
-  // валидирует переданный в качестве аргумента инпут
-  // сделать на один инпут!
-  _validateInputs() {
+  //  валидирует переданный инпут
+  _validateInput(input) {
+    this.input = input;
     let valid = true;
+    const error = input.nextElementSibling;
 
-    this.form.querySelectorAll("input").forEach((input) => {
-      const error = input.nextElementSibling;
-
-      if (input.name === "email" && !input.validity.valid) {
-        error.textContent = INCORRECT_EMAIL;
-        valid = false;
-      } else if (input.name === "password" && !input.validity.valid) {
-        error.textContent = INCORRECT_EMAIL_LENGTH;
-        valid = false;
-      } else if (input.name === "name" && !input.validity.valid) {
-        error.textContent = REQUIRED_FIELD;
-        valid = false;
-      } else if (input.name === "search" && !input.validity.valid) {
-        error.textContent = SEARCH_ERROR;
-        valid = false;
-      } else if (input.validity.valid) {
-        error.textContent = "";
-      }
-    });
+    if (input.name === "email" && !input.validity.valid) {
+      error.textContent = INCORRECT_EMAIL;
+      valid = false;
+    } else if (input.name === "password" && !input.validity.valid) {
+      error.textContent = INCORRECT_EMAIL_LENGTH;
+      valid = false;
+    } else if (input.name === "name" && !input.validity.valid) {
+      error.textContent = REQUIRED_FIELD;
+      valid = false;
+    } else if (input.name === "search" && !input.validity.valid) {
+      error.textContent = SEARCH_ERROR;
+      valid = false;
+    } else if (input.validity.valid) {
+      error.textContent = "";
+    }
     return valid;
   }
 
   // валидирует всю форму
   _validateForm() {
-    if (this._validateInputs()) {
+    if (this.form.checkValidity()) {
       this.buttonSubmit.disabled = false;
     } else {
       this.buttonSubmit.disabled = true;
@@ -161,10 +141,6 @@ export default class Form extends BaseComponent {
       const error = errorField.nextElementSibling;
       error.textContent = "";
     });
-    // this.form.querySelectorAll(".popup__form_error").forEach((field) => {
-    //   field.textContent = "";
-    // this.buttonSave.disabled = true;
-    // });
   }
 
   _cleanInputs() {

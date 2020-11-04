@@ -27,7 +27,7 @@ export default class Header extends BaseComponent {
       ".header__menu-mobile_close",
     );
     this.underlineBlack = this.page.getElementById("underline");
-    this.buttonMain = this.page.querySelectorAll(".button__main");
+    this.buttonsMain = this.page.querySelectorAll(".button__main");
     this.headerInfo = this.page.querySelector(".header__info");
     this.searchResult = this.page.querySelector(".search-result");
     this.buttonMobileMenuArticles = this.page.getElementById("header__menu-mobile-articles-page");
@@ -55,7 +55,7 @@ export default class Header extends BaseComponent {
     this.mobileMenuMain.classList.add("header__buttons_open");
     this.headerMenu.classList.add("header_dark");
     this.headerLogo.classList.add("button_white");
-    this.buttonMain.forEach((element) => {
+    this.buttonsMain.forEach((element) => {
       element.classList.remove("button_black");
     });
     this.userName.classList.remove("button_black");
@@ -72,7 +72,7 @@ export default class Header extends BaseComponent {
     this.mobileMenuMain.classList.remove("header__buttons_open");
     this.headerMenu.classList.remove("header_dark");
     this.headerLogo.classList.remove("button_white");
-    this.buttonMain.forEach((element) => {
+    this.buttonsMain.forEach((element) => {
       element.classList.add("button_black");
     });
     this.userName.classList.add("button_black");

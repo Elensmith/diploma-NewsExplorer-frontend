@@ -30,15 +30,24 @@
 - бэк тут: https://github.com/Elensmith/diploma-NewsExplorer-api
 
 ## Скриншоты:
-главная страница пользователь не вошел 
+ - главная страница пользователь не вошел 
+
 ![главная страница пользователь не вошел](https://github.com/Elensmith/diploma-NewsExplorer-frontend/blob/master/src/images/show-main-not-log.png)
-главная страница пользователь вошел
+
+- главная страница пользователь вошел
+
 ![главная страница пользователь вошел](https://github.com/Elensmith/diploma-NewsExplorer-frontend/blob/master/src/images/show-main-logged.png)
-попап регистрации
+
+- попап регистрации
+
 ![попап регистрации](https://github.com/Elensmith/diploma-NewsExplorer-frontend/blob/master/src/images/show-main-popup.png)
-результаты поиска
+
+- результаты поиска
+
 ![результаты поиска](https://github.com/Elensmith/diploma-NewsExplorer-frontend/blob/master/src/images/show-main-search.png)
-страница сохраненных статей
+
+- страница сохраненных статей
+
 ![страница сохраненных статей](https://github.com/Elensmith/diploma-NewsExplorer-frontend/blob/master/src/images/show-saved.png)
 
 #### version 1.0.7
